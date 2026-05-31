@@ -1,0 +1,35 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+*/build/
+
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+local.properties
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Legado reference source (not part of this project)
+legado_src/
+
+# Extracted API classes (reference only, not source)
+lnr-api-classes/
+lnr-api-extract/
+
+# Compiled artifacts
+*.class
+*.jar
+*.aar
+*.apk
+*.lnrp
+
+# Misc
+*.log
+*.tmp
