@@ -17,8 +17,8 @@ android {
         applicationId = "com.guangyu.plugin"
         minSdk = 24
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "2.0.0"
     }
     buildFeatures {
         compose = true
@@ -33,6 +33,11 @@ android {
         isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
     }
 }
 
@@ -83,14 +88,18 @@ dependencies {
     implementation(libs.okhttp3.logging.interceptor)
     implementation(libs.jsoup)
 
-    //LNR Api
+    // Legado engine dependencies
+    implementation(libs.rhino)
+    implementation(libs.jsonpath)
+    implementation(libs.xpath)
+
+    // LNR Api
     compileOnly(libs.lightnovelreader.api)
     ksp(libs.lightnovelreader.compiler)
 }
 
 val debugHostPkg = "indi.dmzz_yyhyy.lightnovelreader.debug"
 val releaseHostPkg = "indi.dmzz_yyhyy.lightnovelreader"
-
 
 fun pluginApk(): File =
     File(layout.buildDirectory.asFile.get(), "outputs/apk/debug")
@@ -103,7 +112,6 @@ fun installPluginTask(name: String, hostPkg: String) {
     tasks.register(name) {
         group = "plugin"
         dependsOn("assembleDebug")
-
         doLast {
             val adb = listOf(androidComponents.sdkComponents.adb.get().asFile.absolutePath) +
                     (System.getenv("ANDROID_SERIAL")?.let { listOf("-s", it) } ?: emptyList())
@@ -112,7 +120,6 @@ fun installPluginTask(name: String, hostPkg: String) {
                 if (src.name.endsWith(".apk")) src
                 else File(src.parent, src.name.removeSuffix(".lnrp"))
                     .also { src.renameTo(it) }
-
             try {
                 providers.exec {
                     commandLine(adb + listOf("install", "-r", "-t", file))
@@ -120,11 +127,9 @@ fun installPluginTask(name: String, hostPkg: String) {
             } finally {
                 if (file != src) file.renameTo(src)
             }
-
             providers.exec {
                 commandLine(adb + listOf("shell", "am", "force-stop", hostPkg))
             }.result.get()
-
             providers.exec {
                 commandLine(
                     adb + listOf(

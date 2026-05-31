@@ -1,52 +1,35 @@
-﻿# FanData - Legado 书源 LNR 转译插件
+﻿# 光遇聚合 Legado 书源引擎插件
 
-基于 [lyc486 版 Legado](https://gitee.com/lyc486/legado) 的解析引擎，为 [LightNovelReader](https://github.com/dmzz-yyhyy/LightNovelReader) 提供完整的 Legado JSON 书源支持。
+Light Novel Reader (LNR) 插件，内嵌 lyc486 版 Legado JSON 书源解析引擎，支持直接导入和使用 Legado 格式的 JSON 书源。
 
 ## 功能特性
 
-- **完整书源兼容**：直接导入 lyc486 版 Legado JSON 书源，无需修改
-- **全规则类型支持**：CSS 选择器、XPath、JSONPath、正则表达式、JavaScript
-- **JS 安全沙箱**：集成 Rhino 引擎，配备 ClassShutter 安全限制
-- **loginUi 面板**：完整渲染书源作者定义的多功能 Web 面板（登录、配置、开关等）
-- **配置隔离存储**：每个书源的配置独立存储，互不影响
-- **段评支持**：通过 custom.js 注入实现段落评论功能
-- **双重唤起**：支持被动唤起（引擎检测登录需求）和主动唤起（用户手动打开）
+- **完整 Legado 规则引擎支持**：CSS 选择器、XPath、JSONPath、正则表达式、JavaScript 脚本
+- **Rhino JS 引擎**：内嵌 Mozilla Rhino JavaScript 引擎，支持书源中的 JS 规则
+- **搜索**：支持 Legado 书源的搜索规则
+- **发现页**：支持书源的发现页/探索页规则
+- **书籍详情**：获取书籍信息（名称、作者、封面、简介等）
+- **目录**：获取章节目录
+- **正文**：获取章节正文内容
+- **书源导入**：支持从 URL 或 JSON 字符串导入 Legado 书源
+- **WebView 书源面板**：支持 loginUi 书源设置面板
 
-## 项目结构
+## 使用方法
 
-```
-legado-lnr-plugin/
-├── legado-engine/          # 纯逻辑引擎层（不依赖 Android UI）
-│   └── src/main/java/io/legado/engine/
-│       ├── analyze/        # 规则解析器（RuleAnalyzer, AnalyzeByXPath/JSoup/JSonPath/Regex）
-│       ├── entity/         # 数据模型（BookSource, SearchRule, ExploreRule 等）
-│       ├── http/           # HTTP 客户端（OkHttp 封装）
-│       ├── js/             # JS 引擎（Rhino + 安全沙箱）
-│       ├── provider/       # 接口定义（LoginProvider, ConfigProvider, Logger, CacheProvider）
-│       └── util/           # 工具类（ContentHelper, NetworkUtils）
-├── plugin/                 # LNR 插件层
-│   └── src/main/kotlin/io/legado/lnr/
-│       ├── LegadoPlugin.kt           # 插件入口
-│       ├── LegadoWebDataSource.kt    # LNR WebBookDataSource 实现
-│       ├── adapter/                  # 探索页适配器
-│       ├── provider/                 # 登录/配置提供者实现
-│       └── util/                     # 书源管理、段评脚本
-└── build.gradle.kts
-```
+1. 在 LNR 中安装此插件
+2. 插件会自动加载默认的光遇聚合书源
+3. 也可在插件页面手动导入其他 Legado JSON 书源
 
 ## 构建
 
-1. 使用 Android Studio 打开 `legado-lnr-plugin/` 目录
-2. 等待 Gradle 同步完成
-3. 运行 `:plugin:assembleDebug` 任务
-4. 生成的 `.lnrp` 文件位于 `plugin/build/outputs/apk/debug/`
+```bash
+./gradlew :plugin:assembleDebug
+```
 
-## 安装
-
-将生成的 `.lnrp` 文件传输到手机，在 LightNovelReader 中导入即可。
+输出文件: `plugin/build/outputs/apk/debug/plugin-debug.apk.lnrp`
 
 ## 许可证
 
-本项目采用 [GPL-3.0](LICENSE) 许可证。
+GPL-3.0 License
 
-本项目是基于 GPL-3.0 的 [Legado（lyc486 版）](https://gitee.com/lyc486/legado) 的衍生作品。
+衍生自 [lyc486 版 Legado](https://gitee.com/lyc486/legado)
