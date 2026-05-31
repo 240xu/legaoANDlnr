@@ -5,6 +5,7 @@ import io.legado.engine.entity.rule.*
 
 /**
  * 书籍源 - 从 Legado JSON 格式解析
+ * 完整兼容 lyc486 版 Legado 字段
  */
 data class BookSource(
     var bookSourceUrl: String = "",
@@ -20,18 +21,27 @@ data class BookSource(
     var loginUrl: String? = null,
     var loginUi: String? = null,
     var loginCheckJs: String? = null,
+    var coverDecodeJs: String? = null,
     override var bookSourceComment: String? = null,
     var variableComment: String? = null,
     var searchUrl: String? = null,
     var exploreUrl: String? = null,
+    var exploreScreen: String? = null,
     var ruleSearch: SearchRule? = null,
     var ruleBookInfo: BookInfoRule? = null,
     var ruleToc: TocRule? = null,
     var ruleContent: ContentRule? = null,
     var ruleExplore: ExploreRule? = null,
+    var ruleReview: ReviewRule? = null,
     var bookSourceGroup: String? = null,
     var jsEngine: Int = 0,
-    override var concurrentRate: String? = null
+    override var concurrentRate: String? = null,
+    var jsLib: String? = null,
+    var lastUpdateTime: Long = 0,
+    var respondTime: Long = 180000L,
+    var weight: Int = 0,
+    var eventListener: Boolean = false,
+    var customButton: Boolean = false
 ) : BaseSource {
 
     override val sourceUrl: String get() = bookSourceUrl
@@ -44,11 +54,7 @@ data class BookSource(
         val GSON: Gson = Gson()
 
         fun fromJson(json: String): BookSource? {
-            return try {
-                GSON.fromJson(json, BookSource::class.java)
-            } catch (e: Exception) {
-                null
-            }
+            return try { GSON.fromJson(json, BookSource::class.java) } catch (e: Exception) { null }
         }
 
         fun fromJsonArray(json: String): List<BookSource> {
@@ -66,4 +72,5 @@ data class BookSource(
     fun getTocRule(): TocRule = ruleToc ?: TocRule()
     fun getContentRule(): ContentRule = ruleContent ?: ContentRule()
     fun getExploreRule(): ExploreRule = ruleExplore ?: ExploreRule()
+    fun getReviewRule(): ReviewRule = ruleReview ?: ReviewRule()
 }

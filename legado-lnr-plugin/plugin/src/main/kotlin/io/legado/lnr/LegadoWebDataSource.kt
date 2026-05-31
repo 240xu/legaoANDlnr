@@ -55,7 +55,6 @@ object LegadoWebDataSource : WebBookDataSource {
     override suspend fun isOffLine(): Boolean = _isOffLine.value
     override val offLine: Boolean get() = _isOffLine.value
     override val isOffLineFlow: StateFlow<Boolean> = _isOffLine
-
     // ========== Search ==========
     override val searchProvider: SearchProvider = object : SearchProvider {
         override val searchTypes: List<SearchType> = listOf(
@@ -414,3 +413,5 @@ object LegadoWebDataSource : WebBookDataSource {
         return if (parts.size == 2) parts[0] to parts[1] else "" to id
     }
 }
+
+
