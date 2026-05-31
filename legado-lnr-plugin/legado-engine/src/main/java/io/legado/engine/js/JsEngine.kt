@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Rhino JS 引擎封装 - 移植自 lyc486 版 Legado
- * 提供安全沙箱环境执行书源 JavaScript 规则
+ * 使用 initSafeStandardObjects 提供安全沙箱
  */
 class JsEngine(
     private val logger: Logger? = null,
@@ -34,13 +34,11 @@ class JsEngine(
         val cx = Context.enter()
         try {
             cx.optimizationLevel = -1 // Android 不支持 JIT
-            cx.classShutter = RhinoClassShutter()
+            cx.languageVersion = Context.VERSION_ES6
             val scope = getScope(cx, source)
-            // 注入额外变量
             bindings?.forEach { (key, value) ->
                 ScriptableObject.putProperty(scope, key, Context.javaToJS(value, scope))
             }
-            // 注入工具对象
             val jsExtensions = EngineJsExtensions(cacheProvider, configProvider, logger)
             ScriptableObject.putProperty(scope, "java", Context.javaToJS(jsExtensions, scope))
             ScriptableObject.putProperty(scope, "cache", Context.javaToJS(jsExtensions, scope))

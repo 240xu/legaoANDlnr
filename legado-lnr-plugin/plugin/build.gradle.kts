@@ -4,7 +4,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("org.jetbrains.kotlin.plugin.compose")
     id("com.google.devtools.ksp")
@@ -59,9 +58,9 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.4.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")
-    // Engine library
+    implementation("com.google.code.gson:gson:2.11.0")
+    implementation("org.jsoup:jsoup:1.18.3")
     implementation(project(":legado-engine"))
-    // LNR API
     compileOnly("io.nightfish.lightnovelreader:api:0.4-SNAPSHOT")
     ksp("io.nightfish.lightnovelreader:compiler:0.4-SNAPSHOT")
 }

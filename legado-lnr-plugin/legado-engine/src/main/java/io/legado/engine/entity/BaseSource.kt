@@ -1,15 +1,15 @@
 ﻿package io.legado.engine.entity
 
 /**
- * 书源/RSS源基础接口
+ * 书源基础接口
  */
 interface BaseSource {
     val sourceUrl: String
     val sourceName: String
+    val loginUrl_: String?
+    val loginCheckJs_: String?
+    val jsEngine_: Int
     var sourceGroup: String?
-    val loginUrl: String?
-    val loginCheckJs: String?
-    val jsEngine: Int
     var concurrentRate: String?
     var header: String?
     var bookSourceComment: String?

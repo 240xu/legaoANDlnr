@@ -5,7 +5,6 @@ import io.legado.engine.entity.rule.*
 
 /**
  * 书籍源 - 从 Legado JSON 格式解析
- * 已移除 Room 数据库注解和 Android Parcelable
  */
 data class BookSource(
     var bookSourceUrl: String = "",
@@ -18,9 +17,9 @@ data class BookSource(
     var enabledExplore: Boolean = true,
     var enabledCookieJar: Boolean = false,
     override var header: String? = null,
-    override var loginUrl: String? = null,
+    var loginUrl: String? = null,
     var loginUi: String? = null,
-    override var loginCheckJs: String? = null,
+    var loginCheckJs: String? = null,
     override var bookSourceComment: String? = null,
     var variableComment: String? = null,
     var searchUrl: String? = null,
@@ -31,11 +30,15 @@ data class BookSource(
     var ruleContent: ContentRule? = null,
     var ruleExplore: ExploreRule? = null,
     var bookSourceGroup: String? = null,
-    override var jsEngine: Int = 0,
-    override var concurrentRate: String? = null,
-    override val sourceUrl: String get() = bookSourceUrl,
-    override val sourceName: String get() = bookSourceName
+    var jsEngine: Int = 0,
+    override var concurrentRate: String? = null
 ) : BaseSource {
+
+    override val sourceUrl: String get() = bookSourceUrl
+    override val sourceName: String get() = bookSourceName
+    override val loginUrl_: String? get() = loginUrl
+    override val loginCheckJs_: String? get() = loginCheckJs
+    override val jsEngine_: Int get() = jsEngine
 
     companion object {
         val GSON: Gson = Gson()
@@ -58,9 +61,9 @@ data class BookSource(
         }
     }
 
-    val searchRule: SearchRule get() = ruleSearch ?: SearchRule()
-    val bookInfoRule: BookInfoRule get() = ruleBookInfo ?: BookInfoRule()
-    val tocRule: TocRule get() = ruleToc ?: TocRule()
-    val contentRule: ContentRule get() = ruleContent ?: ContentRule()
-    val exploreRule: ExploreRule get() = ruleExplore ?: ExploreRule()
+    fun getSearchRule(): SearchRule = ruleSearch ?: SearchRule()
+    fun getBookInfoRule(): BookInfoRule = ruleBookInfo ?: BookInfoRule()
+    fun getTocRule(): TocRule = ruleToc ?: TocRule()
+    fun getContentRule(): ContentRule = ruleContent ?: ContentRule()
+    fun getExploreRule(): ExploreRule = ruleExplore ?: ExploreRule()
 }
