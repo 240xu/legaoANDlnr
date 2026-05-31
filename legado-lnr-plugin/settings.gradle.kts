@@ -14,6 +14,7 @@ dependencyResolutionManagement {
     repositories {
         maven("https://maven.aliyun.com/repository/google")
         maven("https://maven.aliyun.com/repository/public")
+        maven { url = uri("https://maven.nariko.org/release") }
         maven { url = uri("https://jitpack.io") }
         google()
         mavenCentral()
